@@ -1,0 +1,5 @@
+{
+  "name": "k8s-app",
+  "private": true,
+  "dependencies": {}
+}
