@@ -1,17 +1,18 @@
-FROM ruby:2.6.5-alpine3.10
+FROM ruby:2.5.3
 
-ENV RAILS_ENV production
+RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y sqlite3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-RUN apk --update --no-cache add postgresql-client alpine-sdk postgresql-dev nodejs-current openssl-dev \
-  libc6-compat gcompat && \
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-COPY . /app
+RUN mkdir /app
 WORKDIR /app
-RUN bundle install --deployment --without development test
+
+COPY Gemfile Gemfile.lock ./
+
+RUN gem update --system && gem install bundler -v 2.0.1
+RUN bundle install --binstubs
 
 COPY . .
 
-RUN bundle exec rails assets:precompile
+EXPOSE 3000
 
-CMD bundle exec rails s
+CMD rails server -b 0.0.0.0
