@@ -1,10 +1,10 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: <%= ENV['POSTGRES_HOST'] %>
-  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
-  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+  host: <%= ENV['DATABASE_URL'] %>
+  port: <%= ENV['DATABASE_PORT'] || 5432 %>
+  username: <%= ENV['DATABASE_USER'] || 'postgres' %>
+  password: <%= ENV['DATABASE_PASSWORD'] || 'postgres' %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -24,4 +24,4 @@ test:
 
 production:
   <<: *default
-  database: rails_k8s_prod
+  database: <%= ENV['DATABASE_NAME'] %>

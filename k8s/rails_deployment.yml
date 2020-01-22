@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: rails-k8s-app
+      tier: app
+  template:
+    metadata:
+      name: rails
+      labels:
+        app: rails-k8s-app
+        tier: app
+    spec:
+      containers:
+      - name: rails
+        image: rails-k8s-image:latest
+        imagePullPolicy: Never
+        env:
+        - name: RAILS_LOG_TO_STDOUT
+          value: "true"
+        - name: RAILS_SERVE_STATIC_FILES
+          value: "true"
+        - name: DATABASE_NAME
+          value: "rails_k8s_prod"
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_URL
+          value: "postgres"
+        - name: DATABASE_USER
+          value: "admin"
+        - name: DATABASE_PASSWORD
+          value: "123456"
+        - name: RAILS_ENV
+          value: "production"
+        - name: SECRET_KEY_BASE
+          value: "0a047ba1280630eecb6c3c71c26740aaf8b7f9e95ffbf17e759c66dca82dc4e07f276f71518312db555046ecd344ef8fd36d61608dc5b9aa858082a470f1a179"
+        ports:
+          - containerPort: 3000

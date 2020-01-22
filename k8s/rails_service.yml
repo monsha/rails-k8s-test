@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rails-service
+  labels:
+    app: rails-k8s-app
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+  selector:
+    app: rails-k8s-app
+    tier: app
